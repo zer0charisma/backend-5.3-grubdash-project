@@ -1,14 +1,14 @@
 const path = require("path");
 
-// Use the existing dishes data
+// Use the existing dishes data to validate 
 const dishes = require(path.resolve("src/data/dishes-data"));
 const validate = require("../utils/validate");
 
-// Use this function to assign ID's when necessary
+// function to assign ID's when necessary
 const nextId = require("../utils/nextId");
 const { isIdMatchingWithRouteId } = require("../utils/validate");
 
-
+// create new dish, call nextId, call 
 function create(req, res, next) {
     const { data } = req.body;
     const newDish = {

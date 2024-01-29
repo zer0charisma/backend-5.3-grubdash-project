@@ -3,11 +3,12 @@ const path = require("path");
 // Use the existing order data
 const orders = require(path.resolve("src/data/orders-data"));
 
-// Use this function to assigh ID's when necessary
+// function to assign ID's
 const nextId = require("../utils/nextId");
 const validate = require("../utils/validate");
 const {isIdMatchingWithRouteId} = require("../utils/validate");
 
+// validate dishes quantity
 function validateDishesQuantity(req, res, next) {
     const data = req.body.data;
     data.dishes.forEach((dish, index) => {
@@ -21,6 +22,7 @@ function validateDishesQuantity(req, res, next) {
     next();
 }
 
+// check if order exists before read, list, update
 function isExists(req, res, next) {
     const {orderId} = req.params
     const orderFound = orders.find(order => order.id === orderId)
@@ -35,6 +37,7 @@ function isExists(req, res, next) {
     }
 }
 
+// function to return 400 if status is NOT valid
 function isStatusInValid(req, res, next) {
     const body = req.body.data;
     if (body.status === "invalid") {
@@ -47,6 +50,7 @@ function isStatusInValid(req, res, next) {
     }
 }
 
+// does not update dishId of an existing dish if id is found
 function update(req, res) {
     const order = res.locals.order;
     const body = req.body.data;
@@ -77,7 +81,7 @@ function read(req, res) {
 function list(req, res) {
     res.status(200).json({data: orders})
 }
-
+// delete order by id, set status as pending while deleting, splice one order at the index indicated
 function destroy(req, res, next) {
     const { orderId } = req.params;
     const index = orders.findIndex((order) => order.id === orderId);
